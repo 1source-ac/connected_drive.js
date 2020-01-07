@@ -17,3 +17,6 @@ let vehicle = await account.findVehicle(vehicle_id);
 // Flash it's headlights.
 vehicle.flashLights();
 ```
+
+# Acknowledgements
+Inspired by https://github.com/bimmerconnected/bimmer_connected
