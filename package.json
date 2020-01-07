@@ -1,6 +1,6 @@
 {
   "name": "connected_drive.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ES6 module to access BMW Connected Drive API.",
   "main": "index.js",
   "scripts": {
