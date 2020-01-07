@@ -1,13 +1,17 @@
 {
-  "name": "bimmerconnected.js",
-  "version": "1.0.0",
-  "description": "",
+  "name": "connected_drive.js",
+  "version": "0.1.0",
+  "description": "ES6 module to access BMW Connected Drive API.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jan Häusler",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/janhaa/connected_drive.js.git"
+  },
+  "license": "MIT",
   "dependencies": {
     "await-to-js": "^2.1.1",
     "axios": "^0.19.0",
