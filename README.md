@@ -4,10 +4,16 @@ ES6 API to access BMW Connected Drive API.
 # Example usage
 ```javascript
 const connected_drive = require("connected_drive.js");
+
+// Authenticate with BMW API.
 let account = await connected_drive.auth(
   username,
   password
 );
-let vehicle = await account.findVehicle(vin);
+
+// Find a vehicle with known vehicle identification.
+let vehicle = await account.findVehicle(vehicle_id);
+
+// Flash it's headlights.
 vehicle.flashLights();
 ```
