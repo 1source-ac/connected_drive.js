@@ -1,5 +1,5 @@
 # connected_drive.js
-ES6 API to access BMW Connected Drive API.
+ES6 module to access BMW Connected Drive API.
 
 # Example usage
 ```javascript
