@@ -56,6 +56,11 @@ module.exports = {
     };
 
     return {
+      async vehicles() {
+        console.log("Getting vehicles...");
+        result = await axios.get(VEHICLES_URL, { headers: headers });
+        return result.data.vehicles;
+      },
       async findVehicle(vin) {
         console.log("Getting vehicles...");
         result = await axios.get(VEHICLES_URL, { headers: headers });
