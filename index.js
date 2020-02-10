@@ -2,6 +2,7 @@ const axios = require("axios");
 const qs = require("qs");
 const util = require("util");
 const to = require("await-to-js").default;
+const moment = require("moment");
 
 // NOTE: only for anything except China and USA
 const ROW_SERVER = "b2vapi.bmwgroup.com";
@@ -25,6 +26,7 @@ const BASE_URL = `https://${ROW_SERVER}/webapi/v1`;
 const VEHICLES_URL = `${BASE_URL}/user/vehicles`;
 const SINGLE_VEHICLE_URL = `${VEHICLES_URL}/%s`;
 const REMOTE_SERVICE_URL = `${SINGLE_VEHICLE_URL}/executeService`;
+const VEHICLE_STATUS_URL = `${SINGLE_VEHICLE_URL}/status`;
 
 module.exports = {
   async auth(username, password) {
@@ -79,6 +81,25 @@ module.exports = {
               axios.post(
                 util.format(REMOTE_SERVICE_URL, vehicle.vin),
                 qs.stringify({ serviceType: "LIGHT_FLASH" }),
+                {
+                  headers: headers
+                }
+              )
+            );
+            console.log(result.data);
+          },
+          async status() {
+            if (vehicle === undefined) {
+              console.log("Invalid vin.");
+              return;
+            }
+            console.log(`Requesting status for ${vehicle.vin}...`);
+            [err, result] = await to(
+              axios.post(
+                util.format(VEHICLE_STATUS_URL, vehicle.vin),
+                qs.stringify({
+                  deviceTime: moment().format("%Y-%m-%dT%H:%M:%S")
+                }),
                 {
                   headers: headers
                 }
