@@ -95,17 +95,18 @@ module.exports = {
             }
             console.log(`Requesting status for ${vehicle.vin}...`);
             [err, result] = await to(
-              axios.post(
-                util.format(VEHICLE_STATUS_URL, vehicle.vin),
-                qs.stringify({
-                  deviceTime: moment().format("%Y-%m-%dT%H:%M:%S")
-                }),
-                {
-                  headers: headers
+              axios.get(util.format(VEHICLE_STATUS_URL, vehicle.vin), {
+                headers: headers,
+                params: {
+                  deviceTime: moment().format("YYYY-MM-DDTHH:mm:ss")
                 }
-              )
+              })
             );
-            console.log(result.data);
+            if (err) {
+              throw Error(err);
+            }
+
+            return result.data.vehicleStatus;
           }
         };
       }
