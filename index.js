@@ -14,6 +14,7 @@ const VEHICLES_URL = `${API_BASE_URL}/me/vehicles/v2?all=true&brand=BM`;
 const SINGLE_VEHICLE_URL = `${VEHICLES_URL}/%s`;
 const REMOTE_SERVICE_URL = `${SINGLE_VEHICLE_URL}/executeService`;
 const VEHICLE_STATUS_URL = `${API_BASE_URL}/vehicle/dynamic/v1/%s?offset=-60`;
+const VEHICLE_NAVIGATION_URL = `${API_BASE_URL}/vehicle/navigation/v1/%s`;
 
 module.exports = {
   async auth(username, password) {
@@ -99,6 +100,23 @@ module.exports = {
             }
 
             return result.data.attributesMap;
+          },
+          async location() {
+            if (vehicle === undefined) {
+              console.log("Invalid vin.");
+              return;
+            }
+            console.log(`Requesting location for ${vehicle.vin}...`);
+            [err, result] = await to(
+              axios.get(util.format(VEHICLE_NAVIGATION_URL, vehicle.vin), {
+                headers: headers
+              })
+            );
+            if (err) {
+              throw Error(err);
+            }
+
+            return result.data;
           }
         };
       }
