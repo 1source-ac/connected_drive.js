@@ -3,7 +3,7 @@ ES6 module to access BMW Connected Drive API.
 
 # Example usage
 ```javascript
-const connected_drive = require("connected_drive.js");
+import connected_drive from "connected_drive.js";
 
 // Authenticate with BMW API.
 let account = await connected_drive.auth(
