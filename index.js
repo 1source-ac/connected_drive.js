@@ -34,24 +34,20 @@ module.exports = {
 
     console.log("Authenticating...");
     let err;
-    try {
-      let result = await axios.post(AUTH_URL, qs.stringify(values), {
-        timeout: 1000,
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Content-Length": "124",
-          "Connection": "Keep-Alive",
-          "Host": "b2vapi.bmwgroup.com",
-          "Accept-Encoding": "gzip",
-          "Authorization": "Basic blF2NkNxdHhKdVhXUDc0eGYzQ0p3VUVQOjF6REh4NnVuNGNEanli" +
-                           "TEVOTjNreWZ1bVgya0VZaWdXUGNRcGR2RFJwSUJrN3JPSg==",
-          "Credentials": "nQv6CqtxJuXWP74xf3CJwUEP:1zDHx6un4cDjybLENN3kyfumX2kEYigWPcQpdvDRpIBk7rOJ",
-          "User-Agent": "okhttp/2.60",
-        }
-      });
-    } catch(err) {
-      console.log(err);
-    }
+    let result = await axios.post(AUTH_URL, qs.stringify(values), {
+      timeout: 1000,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Length": "124",
+        "Connection": "Keep-Alive",
+        "Host": "b2vapi.bmwgroup.com",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Basic blF2NkNxdHhKdVhXUDc0eGYzQ0p3VUVQOjF6REh4NnVuNGNEanli" +
+                         "TEVOTjNreWZ1bVgya0VZaWdXUGNRcGR2RFJwSUJrN3JPSg==",
+        "Credentials": "nQv6CqtxJuXWP74xf3CJwUEP:1zDHx6un4cDjybLENN3kyfumX2kEYigWPcQpdvDRpIBk7rOJ",
+        "User-Agent": "okhttp/2.60",
+      }
+    });
 
     const token_data = qs.parse(
       new URL(result.request.res.responseUrl).hash.slice(1)
