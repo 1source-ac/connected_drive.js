@@ -5,7 +5,7 @@ const to = require("await-to-js").default;
 const moment = require("moment");
 
 // NOTE: only for anything except China and USA
-const AUTH_SERVER = "customer.bmwgroup.com";
+const AUTH_SERVER = "b2vapi.bmwgroup.com";
 const AUTH_URL = `https://${AUTH_SERVER}/gcdm/oauth/authenticate`;
 
 const API_SERVER = "www.bmw-connecteddrive.com";
@@ -27,7 +27,7 @@ module.exports = {
       redirect_uri:
         "https://www.bmw-connecteddrive.com/app/static/external-dispatch.html",
       response_type: "token",
-      scope: "authenticate_user fupo",
+      scope: "authenticate_user vehicle_data remote_services",
       username,
       password
     };
@@ -36,7 +36,15 @@ module.exports = {
     let err;
     let result = await axios.post(AUTH_URL, qs.stringify(values), {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Length": "124",
+        "Connection": "Keep-Alive",
+        "Host": "b2vapi.bmwgroup.com",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Basic blF2NkNxdHhKdVhXUDc0eGYzQ0p3VUVQOjF6REh4NnVuNGNEanli" +
+                         "TEVOTjNreWZ1bVgya0VZaWdXUGNRcGR2RFJwSUJrN3JPSg==",
+        "Credentials": "nQv6CqtxJuXWP74xf3CJwUEP:1zDHx6un4cDjybLENN3kyfumX2kEYigWPcQpdvDRpIBk7rOJ",
+        "User-Agent": "okhttp/2.60",
       }
     });
 
