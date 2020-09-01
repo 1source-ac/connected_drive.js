@@ -35,6 +35,7 @@ module.exports = {
     console.log("Authenticating...");
     let err;
     let result = await axios.post(AUTH_URL, qs.stringify(values), {
+      timeout: 1000,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         "Content-Length": "124",
