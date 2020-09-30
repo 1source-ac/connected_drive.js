@@ -90,7 +90,8 @@ module.exports = {
                 }
               )
             );
-            console.log(result.data);
+            if(err) console.log(err);
+            else console.log(result.data);
           },
           async status() {
             if (vehicle === undefined) {
