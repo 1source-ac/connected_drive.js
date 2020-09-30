@@ -4,7 +4,7 @@ const util = require("util");
 const to = require("await-to-js").default;
 const moment = require("moment");
 
-// NOTE: only for anything except China and USA
+// NOTE: for all countries except of China and USA
 const AUTH_SERVER = "b2vapi.bmwgroup.com";
 const AUTH_URL = `https://${AUTH_SERVER}/gcdm/oauth/authenticate`;
 
@@ -15,6 +15,8 @@ const SINGLE_VEHICLE_URL = `${VEHICLES_URL}/%s`;
 const REMOTE_SERVICE_URL = `${SINGLE_VEHICLE_URL}/executeService`;
 const VEHICLE_STATUS_URL = `${API_BASE_URL}/vehicle/dynamic/v1/%s?offset=-60`;
 const VEHICLE_NAVIGATION_URL = `${API_BASE_URL}/vehicle/navigation/v1/%s`;
+
+axios.defaults.timeout = 10000;
 
 module.exports = {
   async auth(username, password) {
@@ -32,26 +34,19 @@ module.exports = {
       password
     };
 
-    console.log("Authenticating...");
+    console.log("Authenticating.....");
     let err;
-    try {
       let result = await axios.post(AUTH_URL, qs.stringify(values), {
-        timeout: 1000,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           "Content-Length": "124",
-          "Connection": "Keep-Alive",
           "Host": "b2vapi.bmwgroup.com",
           "Accept-Encoding": "gzip",
-          "Authorization": "Basic blF2NkNxdHhKdVhXUDc0eGYzQ0p3VUVQOjF6REh4NnVuNGNEanli" +
-                           "TEVOTjNreWZ1bVgya0VZaWdXUGNRcGR2RFJwSUJrN3JPSg==",
-          "Credentials": "nQv6CqtxJuXWP74xf3CJwUEP:1zDHx6un4cDjybLENN3kyfumX2kEYigWPcQpdvDRpIBk7rOJ",
-          "User-Agent": "okhttp/2.60",
         }
-      });
-    } catch(err) {
-      console.log(err);
-    }
+}
+);
+
+    console.log("Auth request done");
 
     const token_data = qs.parse(
       new URL(result.request.res.responseUrl).hash.slice(1)
