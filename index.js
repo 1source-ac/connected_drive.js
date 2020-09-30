@@ -4,13 +4,12 @@ const util = require("util");
 const to = require("await-to-js").default;
 const moment = require("moment");
 
-// NOTE: for all countries except of China and USA
-const AUTH_SERVER = "b2vapi.bmwgroup.com";
-const AUTH_URL = `https://${AUTH_SERVER}/gcdm/oauth/authenticate`;
+const AUTH_URL = `https://customer.bmwgroup.com/gcdm/oauth/authenticate`;
 
-const API_SERVER = "www.bmw-connecteddrive.com";
-const API_BASE_URL = `https://${API_SERVER}/api`;
-const VEHICLES_URL = `${API_BASE_URL}/me/vehicles/v2`;
+// NOTE: only for anything except China and USA
+const API_SERVER = "b2vapi.bmwgroup.com";
+const API_BASE_URL = `https://${API_SERVER}/webapi/v1`;
+const VEHICLES_URL = `${API_BASE_URL}/user/vehicles`;
 const SINGLE_VEHICLE_URL = `${VEHICLES_URL}/%s`;
 const REMOTE_SERVICE_URL = `${SINGLE_VEHICLE_URL}/executeService`;
 const VEHICLE_STATUS_URL = `${API_BASE_URL}/vehicle/dynamic/v1/%s?offset=-60`;
@@ -34,19 +33,25 @@ module.exports = {
       password
     };
 
-    console.log("Authenticating.....");
+    console.log("Authenticating...");
     let err;
-      let result = await axios.post(AUTH_URL, qs.stringify(values), {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Content-Length": "124",
-          "Host": "b2vapi.bmwgroup.com",
-          "Accept-Encoding": "gzip",
-        }
-}
-);
+    let result;
+    try {
+      result = await axios.post(AUTH_URL, qs.stringify(values), {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Length": "124",
+//        "Host": "b2vapi.bmwgroup.com",
+        "Accept-Encoding": "gzip",
+      }
+    });
+    } catch(err) {
+	console.log(err);
+    }
 
     console.log("Auth request done");
+
+    console.log("result is", result);
 
     const token_data = qs.parse(
       new URL(result.request.res.responseUrl).hash.slice(1)
@@ -64,13 +69,18 @@ module.exports = {
     return {
       async vehicles() {
         console.log("Getting vehicles...");
-        result = await axios.get(VEHICLES_URL, { headers: headers });
-        return result.data;
+ 	try {
+	        result = await axios.get(VEHICLES_URL, { headers: headers });
+	} catch(err) {
+	   	console.log(err);
+	}
+        console.log(result.data);
+        return result.data.vehicles;
       },
       async findVehicle(vin) {
         console.log("Getting vehicles...");
         result = await axios.get(VEHICLES_URL, { headers: headers });
-        vehicles = result.data; //.map(vehicle => ({ vin: vehicle.vin })));
+        vehicles = result.data.vehicles; //.map(vehicle => ({ vin: vehicle.vin })));
 
         let vehicle = vehicles.find(vehicle => vehicle.vin == vin);
 
