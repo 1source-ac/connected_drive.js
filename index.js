@@ -38,20 +38,19 @@ module.exports = {
     let result;
     try {
       result = await axios.post(AUTH_URL, qs.stringify(values), {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Content-Length": "124",
-//        "Host": "b2vapi.bmwgroup.com",
-        "Accept-Encoding": "gzip",
-      }
-    });
-    } catch(err) {
-	console.log(err);
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Length": "124",
+          //        "Host": "b2vapi.bmwgroup.com",
+          "Accept-Encoding": "gzip",
+        }
+      });
+    } catch (err) {
+      console.log(err);
+      throw new Error("Authentication failed.");
     }
 
-    console.log("Auth request done");
-
-    console.log("result is", result);
+    console.log("Authenticated.");
 
     const token_data = qs.parse(
       new URL(result.request.res.responseUrl).hash.slice(1)
@@ -69,12 +68,12 @@ module.exports = {
     return {
       async vehicles() {
         console.log("Getting vehicles...");
- 	try {
-	        result = await axios.get(VEHICLES_URL, { headers: headers });
-	} catch(err) {
-	   	console.log(err);
-	}
-        console.log(result.data);
+        try {
+          result = await axios.get(VEHICLES_URL, { headers: headers });
+        } catch (err) {
+          console.log(err);
+          return [];
+        }
         return result.data.vehicles;
       },
       async findVehicle(vin) {
@@ -100,7 +99,43 @@ module.exports = {
                 }
               )
             );
-            if(err) console.log(err);
+            if (err) console.log(err);
+            else console.log(result.data);
+          },
+          async lock() {
+            if (vehicle === undefined) {
+              console.log("Invalid vin.");
+              return;
+            }
+            console.log(`Locking ${vehicle.vin}...`);
+            [err, result] = await to(
+              axios.post(
+                util.format(REMOTE_SERVICE_URL, vehicle.vin),
+                qs.stringify({ serviceType: "DOOR_LOCK" }),
+                {
+                  headers: headers
+                }
+              )
+            );
+            if (err) console.log(err);
+            else console.log(result.data);
+          },
+          async unlock() {
+            if (vehicle === undefined) {
+              console.log("Invalid vin.");
+              return;
+            }
+            console.log(`Locking ${vehicle.vin}...`);
+            [err, result] = await to(
+              axios.post(
+                util.format(REMOTE_SERVICE_URL, vehicle.vin),
+                qs.stringify({ serviceType: "DOOR_UNLOCK" }),
+                {
+                  headers: headers
+                }
+              )
+            );
+            if (err) console.log(err);
             else console.log(result.data);
           },
           async status() {
