@@ -12,6 +12,7 @@ const API_BASE_URL = `https://${API_SERVER}/webapi/v1`;
 const VEHICLES_URL = `${API_BASE_URL}/user/vehicles`;
 const SINGLE_VEHICLE_URL = `${VEHICLES_URL}/%s`;
 const REMOTE_SERVICE_URL = `${SINGLE_VEHICLE_URL}/executeService`;
+const REMOTE_SERVICE_STATUS_URL = `${SINGLE_VEHICLE_URL}/serviceExecutionStatus?serviceType=%s`;
 const VEHICLE_STATUS_URL = `${API_BASE_URL}/vehicle/dynamic/v1/%s?offset=-60`;
 const VEHICLE_NAVIGATION_URL = `${API_BASE_URL}/vehicle/navigation/v1/%s`;
 
@@ -94,6 +95,23 @@ module.exports = {
               axios.post(
                 util.format(REMOTE_SERVICE_URL, vehicle.vin),
                 qs.stringify({ serviceType: "LIGHT_FLASH" }),
+                {
+                  headers: headers
+                }
+              )
+            );
+            if (err) console.log(err);
+            else console.log(result.data);
+          },
+          async lockStatus() {
+            if (vehicle === undefined) {
+              console.log("Invalid vin.");
+              return;
+            }
+            console.log(`Retrieving status for lock request from ${vehicle.vin}...`);
+            [err, result] = await to(
+              axios.get(
+                util.format(REMOTE_SERVICE_STATUS_URL, vehicle.vin, "DOOR_LOCK"),
                 {
                   headers: headers
                 }
