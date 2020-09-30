@@ -10,11 +10,13 @@ const AUTH_URL = `https://${AUTH_SERVER}/gcdm/oauth/authenticate`;
 
 const API_SERVER = "www.bmw-connecteddrive.com";
 const API_BASE_URL = `https://${API_SERVER}/api`;
-const VEHICLES_URL = `${API_BASE_URL}/me/vehicles/v2?all=true&brand=BM`;
+const VEHICLES_URL = `${API_BASE_URL}/me/vehicles/v2`;
 const SINGLE_VEHICLE_URL = `${VEHICLES_URL}/%s`;
 const REMOTE_SERVICE_URL = `${SINGLE_VEHICLE_URL}/executeService`;
 const VEHICLE_STATUS_URL = `${API_BASE_URL}/vehicle/dynamic/v1/%s?offset=-60`;
 const VEHICLE_NAVIGATION_URL = `${API_BASE_URL}/vehicle/navigation/v1/%s`;
+
+axios.defaults.timeout = 10000;
 
 module.exports = {
   async auth(username, password) {
