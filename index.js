@@ -4,13 +4,13 @@ const util = require("util");
 const to = require("await-to-js").default;
 const moment = require("moment");
 
-// NOTE: only for anything except China and USA
-const AUTH_SERVER = "b2vapi.bmwgroup.com";
-const AUTH_URL = `https://${AUTH_SERVER}/gcdm/oauth/authenticate`;
 
-const API_SERVER = "www.bmw-connecteddrive.com";
-const API_BASE_URL = `https://${API_SERVER}/api`;
-const VEHICLES_URL = `${API_BASE_URL}/me/vehicles/v2`;
+const AUTH_URL = `https://customer.bmwgroup.com/gcdm/oauth/authenticate`;
+
+// NOTE: only for anything except China and USA
+const API_SERVER = "b2vapi.bmwgroup.com";
+const API_BASE_URL = `https://${API_SERVER}/webapi/v1`;
+const VEHICLES_URL = `${API_BASE_URL}/user/vehicles`;
 const SINGLE_VEHICLE_URL = `${VEHICLES_URL}/%s`;
 const REMOTE_SERVICE_URL = `${SINGLE_VEHICLE_URL}/executeService`;
 const VEHICLE_STATUS_URL = `${API_BASE_URL}/vehicle/dynamic/v1/%s?offset=-60`;
