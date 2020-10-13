@@ -8,13 +8,15 @@ const AUTH_URL = `https://customer.bmwgroup.com/gcdm/oauth/authenticate`;
 
 // NOTE: only for anything except China and USA
 const API_SERVER = "b2vapi.bmwgroup.com";
+const API_SERVER_NEW = "www.bmw-connecteddrive.de";
 const API_BASE_URL = `https://${API_SERVER}/webapi/v1`;
-const VEHICLES_URL = `${API_BASE_URL}/user/vehicles`;
+const API_BASE_URL_NEW = `https://${API_SERVER_NEW}/api`;
+const VEHICLES_URL = `${API_BASE_URL_NEW}/user/vehicles`;
 const SINGLE_VEHICLE_URL = `${VEHICLES_URL}/%s`;
 const REMOTE_SERVICE_URL = `${SINGLE_VEHICLE_URL}/executeService`;
 const REMOTE_SERVICE_STATUS_URL = `${SINGLE_VEHICLE_URL}/serviceExecutionStatus?serviceType=%s`;
-const VEHICLE_STATUS_URL = `${API_BASE_URL}/vehicle/dynamic/v1/%s?offset=-60`;
-const VEHICLE_NAVIGATION_URL = `${API_BASE_URL}/vehicle/navigation/v1/%s`;
+const VEHICLE_STATUS_URL = `${API_BASE_URL_NEW}/vehicle/dynamic/v1/%s?offset=-60`;
+const VEHICLE_NAVIGATION_URL = `${API_BASE_URL_NEW}/vehicle/navigation/v1/%s`;
 
 axios.defaults.timeout = 10000;
 
@@ -65,6 +67,8 @@ module.exports = {
     const headers = {
       authorization: `Bearer ${access_token}`
     };
+
+    console.log("token is")
 
     return {
       async vehicles() {
