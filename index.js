@@ -35,7 +35,7 @@ module.exports = {
     };
 
     console.log("Authenticating...");
-    let err;
+    let error;
     let result;
     try {
       result = await axios.post(AUTH_URL, qs.stringify(values), {
@@ -91,7 +91,7 @@ module.exports = {
               return;
             }
             console.log(`Flashing lights for ${vehicle.vin}...`);
-            [err, result] = await to(
+            [error, result] = await to(
               axios.post(
                 util.format(REMOTE_SERVICE_URL, vehicle.vin),
                 qs.stringify({ serviceType: "LIGHT_FLASH" }),
@@ -100,7 +100,7 @@ module.exports = {
                 }
               )
             );
-            if (err) console.log(err);
+            if (error) console.log(error);
             else console.log(result.data);
           },
           async lockStatus() {
@@ -109,7 +109,7 @@ module.exports = {
               return;
             }
             console.log(`Retrieving status for lock request from ${vehicle.vin}...`);
-            [err, result] = await to(
+            [error, result] = await to(
               axios.get(
                 util.format(REMOTE_SERVICE_STATUS_URL, vehicle.vin, "DOOR_LOCK"),
                 {
@@ -117,7 +117,7 @@ module.exports = {
                 }
               )
             );
-            if (err) console.log(err);
+            if (error) console.log(error);
             else console.log(result.data);
           },
           async lock() {
@@ -126,7 +126,7 @@ module.exports = {
               return;
             }
             console.log(`Locking ${vehicle.vin}...`);
-            [err, result] = await to(
+            [error, result] = await to(
               axios.post(
                 util.format(REMOTE_SERVICE_URL, vehicle.vin),
                 qs.stringify({ serviceType: "DOOR_LOCK" }),
@@ -135,7 +135,7 @@ module.exports = {
                 }
               )
             );
-            if (err) console.log(err);
+            if (error) console.log(error);
             else console.log(result.data);
           },
           async unlock() {
@@ -144,7 +144,7 @@ module.exports = {
               return;
             }
             console.log(`Locking ${vehicle.vin}...`);
-            [err, result] = await to(
+            [error, result] = await to(
               axios.post(
                 util.format(REMOTE_SERVICE_URL, vehicle.vin),
                 qs.stringify({ serviceType: "DOOR_UNLOCK" }),
@@ -153,7 +153,7 @@ module.exports = {
                 }
               )
             );
-            if (err) console.log(err);
+            if (error) console.log(error);
             else console.log(result.data);
           },
           async status() {
@@ -162,7 +162,7 @@ module.exports = {
               return;
             }
             console.log(`Requesting status for ${vehicle.vin}...`);
-            [err, result] = await to(
+            [error, result] = await to(
               axios.get(util.format(VEHICLE_STATUS_URL, vehicle.vin), {
                 headers: headers
               })
@@ -179,7 +179,7 @@ module.exports = {
               return;
             }
             console.log(`Requesting location for ${vehicle.vin}...`);
-            [err, result] = await to(
+            [error, result] = await to(
               axios.get(util.format(VEHICLE_NAVIGATION_URL, vehicle.vin), {
                 headers: headers
               })
