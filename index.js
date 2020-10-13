@@ -86,7 +86,7 @@ module.exports = {
       async findVehicle(vin) {
         console.log("Getting vehicles...");
         result = await axios.get(VEHICLES_URL, { headers: headers });
-        vehicles = result.data.vehicles; //.map(vehicle => ({ vin: vehicle.vin })));
+        vehicles = result.data; //.map(vehicle => ({ vin: vehicle.vin })));
 
         let vehicle = vehicles.find(vehicle => vehicle.vin == vin);
 
