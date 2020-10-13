@@ -168,7 +168,7 @@ module.exports = {
               })
             );
             if (error) {
-              throw Error(`${error.mesage}: ${JSON.stringify(error.response.data)}`);
+              throw Error(`${error.message}: ${JSON.stringify(error.response)}`);
             }
 
             return result.data.attributesMap;
@@ -185,7 +185,7 @@ module.exports = {
               })
             );
             if (error) {
-              throw Error(`${error.mesage}: ${JSON.stringify(error.response.data)}`);
+              throw Error(`${error.message}: ${JSON.stringify(error.response)}`);
             }
 
             return result.data;
