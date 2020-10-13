@@ -11,7 +11,7 @@ const API_SERVER = "b2vapi.bmwgroup.com";
 const API_SERVER_NEW = "www.bmw-connecteddrive.de";
 const API_BASE_URL = `https://${API_SERVER}/webapi/v1`;
 const API_BASE_URL_NEW = `https://${API_SERVER_NEW}/api`;
-const VEHICLES_URL = `${API_BASE_URL_NEW}/user/vehicles`;
+const VEHICLES_URL = `${API_BASE_URL_NEW}/me/vehicles/v2`;
 const SINGLE_VEHICLE_URL = `${VEHICLES_URL}/%s`;
 const REMOTE_SERVICE_URL = `${SINGLE_VEHICLE_URL}/executeService`;
 const REMOTE_SERVICE_STATUS_URL = `${SINGLE_VEHICLE_URL}/serviceExecutionStatus?serviceType=%s`;
