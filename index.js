@@ -18,6 +18,8 @@ const REMOTE_SERVICE_STATUS_URL = `${SINGLE_VEHICLE_URL}/serviceExecutionStatus?
 const VEHICLE_STATUS_URL = `${API_BASE_URL_NEW}/vehicle/dynamic/v1/%s?offset=-60`;
 const VEHICLE_NAVIGATION_URL = `${API_BASE_URL_NEW}/vehicle/navigation/v1/%s`;
 
+// https://www.bmw-connecteddrive.de/api/me/vehicles/v2?all=true&brand=BM
+
 axios.defaults.timeout = 10000;
 
 module.exports = {
@@ -55,8 +57,10 @@ module.exports = {
 
     console.log("Authenticated.");
 
+    console.log(result.request.res.responseUrl);
+
     const token_data = qs.parse(
-      new URL(result.request.res.responseUrl).hash.slice(1)
+      result.request.res.responseUrl.split("#")[1]
     );
 
     access_token = token_data.access_token;
@@ -68,8 +72,6 @@ module.exports = {
       authorization: `Bearer ${access_token}`
     };
 
-    console.log("token is")
-
     return {
       async vehicles() {
         console.log("Getting vehicles...");
@@ -79,7 +81,7 @@ module.exports = {
           console.log(err);
           return [];
         }
-        return result.data.vehicles;
+        return result.data;
       },
       async findVehicle(vin) {
         console.log("Getting vehicles...");
