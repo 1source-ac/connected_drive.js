@@ -167,8 +167,8 @@ module.exports = {
                 headers: headers
               })
             );
-            if (err) {
-              throw Error(`${err.mesage}: ${JSON.stringify(error.response.data)}`);
+            if (error) {
+              throw Error(`${error.mesage}: ${JSON.stringify(error.response.data)}`);
             }
 
             return result.data.attributesMap;
@@ -184,8 +184,8 @@ module.exports = {
                 headers: headers
               })
             );
-            if (err) {
-              throw Error(`${err.mesage}: ${JSON.stringify(error.response.data)}`);
+            if (error) {
+              throw Error(`${error.mesage}: ${JSON.stringify(error.response.data)}`);
             }
 
             return result.data;
