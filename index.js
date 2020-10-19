@@ -13,7 +13,7 @@ const API_BASE_URL = `https://${API_SERVER}/webapi/v1`;
 const API_BASE_URL_NEW = `https://${API_SERVER_NEW}/api`;
 const VEHICLES_URL = `${API_BASE_URL_NEW}/me/vehicles/v2`;
 const SINGLE_VEHICLE_URL = `${VEHICLES_URL}/%s`;
-const REMOTE_SERVICE_URL = `${SINGLE_VEHICLE_URL}/executeService`;
+const REMOTE_SERVICE_URL = `https://${API_SERVER_NEW}/remoteservices/rsapi/v1/%s/%s`;
 const REMOTE_SERVICE_STATUS_URL = `${SINGLE_VEHICLE_URL}/serviceExecutionStatus?serviceType=%s`;
 const VEHICLE_STATUS_URL = `${API_BASE_URL_NEW}/vehicle/dynamic/v1/%s?offset=-60`;
 const VEHICLE_NAVIGATION_URL = `${API_BASE_URL_NEW}/vehicle/navigation/v1/%s`;
@@ -134,10 +134,9 @@ module.exports = {
             console.log(`Locking ${vehicle.vin}...`);
             [error, result] = await to(
               axios.post(
-                util.format(REMOTE_SERVICE_URL, vehicle.vin),
-                qs.stringify({ serviceType: "DOOR_LOCK" }),
+                util.format(REMOTE_SERVICE_URL, vehicle.vin, "RDL"),
                 {
-                  headers: headers
+                  headers
                 }
               )
             );
@@ -149,13 +148,12 @@ module.exports = {
               console.log("Invalid vin.");
               return;
             }
-            console.log(`Locking ${vehicle.vin}...`);
+            console.log(`Unlocking ${vehicle.vin}...`);
             [error, result] = await to(
               axios.post(
-                util.format(REMOTE_SERVICE_URL, vehicle.vin),
-                qs.stringify({ serviceType: "DOOR_UNLOCK" }),
+                util.format(REMOTE_SERVICE_URL, vehicle.vin, "RDU"),
                 {
-                  headers: headers
+                  headers
                 }
               )
             );
