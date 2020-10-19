@@ -135,6 +135,7 @@ module.exports = {
             [error, result] = await to(
               axios.post(
                 util.format(REMOTE_SERVICE_URL, vehicle.vin, "RDL"),
+                { clientId: 3 },
                 {
                   headers
                 }
@@ -152,6 +153,7 @@ module.exports = {
             [error, result] = await to(
               axios.post(
                 util.format(REMOTE_SERVICE_URL, vehicle.vin, "RDU"),
+                { clientId: 3 },
                 {
                   headers
                 }
