@@ -38,7 +38,6 @@ module.exports = {
       password
     };
 
-    console.log("Authenticating...");
     let error;
     let result;
     try {
@@ -51,13 +50,8 @@ module.exports = {
         }
       });
     } catch (err) {
-      console.log(err);
       throw new Error("Authentication failed.");
     }
-
-    console.log("Authenticated.");
-
-    console.log(result.request.res.responseUrl);
 
     const token_data = qs.parse(
       result.request.res.responseUrl.split("#")[1]
@@ -74,17 +68,14 @@ module.exports = {
 
     return {
       async vehicles() {
-        console.log("Getting vehicles...");
         try {
           result = await axios.get(VEHICLES_URL, { headers: headers });
         } catch (err) {
-          console.log(err);
-          return [];
+          throw new Error(err);
         }
         return result.data;
       },
       async findVehicle(vin) {
-        console.log("Getting vehicles...");
         result = await axios.get(VEHICLES_URL, { headers: headers });
         vehicles = result.data; //.map(vehicle => ({ vin: vehicle.vin })));
 
@@ -93,10 +84,8 @@ module.exports = {
         return {
           async flashLights() {
             if (vehicle === undefined) {
-              console.log("Invalid vin.");
-              return;
+              throw new Error("Invalid vehicle identification number (vin).");
             }
-            console.log(`Flashing lights for ${vehicle.vin}...`);
             [error, result] = await to(
               axios.post(
                 util.format(REMOTE_SERVICE_URL, vehicle.vin),
@@ -106,15 +95,14 @@ module.exports = {
                 }
               )
             );
-            if (error) console.log(error);
-            else console.log(result.data);
+            if (error)
+              throw error;
+            return result.data;
           },
           async lockStatus() {
             if (vehicle === undefined) {
-              console.log("Invalid vin.");
-              return;
+              throw new Error("Invalid vehicle identification number (vin).");
             }
-            console.log(`Retrieving status for lock request from ${vehicle.vin}...`);
             [error, result] = await to(
               axios.get(
                 util.format(REMOTE_SERVICE_STATUS_URL, vehicle.vin, "DOOR_LOCK"),
@@ -123,15 +111,14 @@ module.exports = {
                 }
               )
             );
-            if (error) console.log(error);
-            else console.log(result.data);
+            if (error)
+              throw error;
+            return result.data;
           },
           async lock() {
             if (vehicle === undefined) {
-              console.log("Invalid vin.");
-              return;
+              throw new Error("Invalid vehicle identification number (vin).");
             }
-            console.log(`Locking ${vehicle.vin}...`);
             [error, result] = await to(
               axios.post(
                 util.format(REMOTE_SERVICE_URL, vehicle.vin, "RDL"),
@@ -141,15 +128,14 @@ module.exports = {
                 }
               )
             );
-            if (error) console.log(error);
-            else console.log(result.data);
+            if (error) throw error;
+
+            return result.data;
           },
           async unlock() {
             if (vehicle === undefined) {
-              console.log("Invalid vin.");
-              return;
+              throw new Error("Invalid vehicle identification number (vin).");
             }
-            console.log(`Unlocking ${vehicle.vin}...`);
             [error, result] = await to(
               axios.post(
                 util.format(REMOTE_SERVICE_URL, vehicle.vin, "RDU"),
@@ -159,39 +145,35 @@ module.exports = {
                 }
               )
             );
-            if (error) console.log(error);
-            else console.log(result.data);
+            if (error) throw error;
+            return result.data;                        
           },
           async status() {
             if (vehicle === undefined) {
-              console.log("Invalid vin.");
-              return;
+              throw new Error("Invalid vehicle identification number (vin).");
             }
-            console.log(`Requesting status for ${vehicle.vin}...`);
             [error, result] = await to(
               axios.get(util.format(VEHICLE_STATUS_URL, vehicle.vin), {
                 headers: headers
               })
             );
             if (error) {
-              throw Error(`${error.message}: ${JSON.stringify([error.response.status, error.response.headers, error.response.data])}`);
+              throw new Error(`${error.message}: ${JSON.stringify([error.response.status, error.response.headers, error.response.data])}`);
             }
 
             return result.data.attributesMap;
           },
           async location() {
             if (vehicle === undefined) {
-              console.log("Invalid vin.");
-              return;
+              throw new Error("Invalid vehicle identification number (vin).");
             }
-            console.log(`Requesting location for ${vehicle.vin}...`);
             [error, result] = await to(
               axios.get(util.format(VEHICLE_NAVIGATION_URL, vehicle.vin), {
                 headers: headers
               })
             );
             if (error) {
-              throw Error(`${error.message}: ${JSON.stringify([error.response.status, error.response.headers, error.response.data])}`);
+              throw new Error(`${error.message}: ${JSON.stringify([error.response.status, error.response.headers, error.response.data])}`);
             }
 
             return result.data;
